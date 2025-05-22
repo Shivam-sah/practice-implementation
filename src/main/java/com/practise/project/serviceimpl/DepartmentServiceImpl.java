@@ -29,8 +29,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 			return deptRepo.save(dept);			
 		} catch(Exception ex) {
 			throw ex;
-		}
-		
+		}		
 	}
 
 	@Override
