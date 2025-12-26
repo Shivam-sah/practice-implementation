@@ -2,6 +2,8 @@ package com.practise.project.entity;
 
 import java.util.Set;
 import com.practise.project.model.AuditableEntity;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -38,19 +40,25 @@ public class Employee extends AuditableEntity {
 	@Column(name = "mobile_number")
 	private String mobileNumber;
 	
-	@OneToOne
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "profile_id")
 	private Profile profile;
 	
-	@ManyToOne
-	@JoinColumn(name = "department_id")
-	private Department department;
-		
-	@ManyToMany
-    @JoinTable(
-        name = "employee_project",
-        joinColumns = @JoinColumn(name = "employee_id"),
-        inverseJoinColumns = @JoinColumn(name = "project_id")
-    )
-    private Set<Project> projects;
+//	@ManyToOne
+//	@JoinColumn(name = "department_id")
+//	private Department department;
+//		
+//	@ManyToMany
+//    @JoinTable(
+//        name = "employee_project",
+//        joinColumns = @JoinColumn(name = "employee_id"),
+//        inverseJoinColumns = @JoinColumn(name = "project_id")
+//    )
+//    private Set<Project> projects;
+	
+	
+	public void addProfile(Profile profile){
+        profile.setEmployee(this);
+        this.profile = profile;
+    }
 }

@@ -1,9 +1,11 @@
 package com.practise.project.service;
 
-import com.practise.project.entity.Employee;
-
+import com.practise.project.dto.EmployeeDto;
 
 public interface EmployeeService {
 
-	Employee getEmployeeById(Integer id) throws Exception;
+	EmployeeDto getEmployeeById(Integer id) throws Exception;
+
+	EmployeeDto createEmployee(EmployeeDto request);
+	
 }

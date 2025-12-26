@@ -25,12 +25,13 @@ public class Profile extends AuditableEntity{
 	private String location;
 	
 	@Column(name = "career_level")
-	private String careerLevel;
+	private Integer careerLevel;
 	
 	@Column(name = "role")
 	private String role;
 	
-	@OneToOne(mappedBy = "profile" , cascade = CascadeType.ALL)
-//	@JoinColumn(name = "emp_id")
+	@OneToOne(cascade = CascadeType.ALL)
+//	@OneToOne
+	@JoinColumn(name = "emp_id")
 	private Employee employee;
 }

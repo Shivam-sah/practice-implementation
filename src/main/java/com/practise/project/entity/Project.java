@@ -19,10 +19,9 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Project extends AuditableEntity{
 	
-	@Column(name = "project_name")
+	@Column(name = "project_name" ,nullable  = false)
 	private String projectName;
 	
-	@Column(name = "project_code")
+	@Column(name = "project_code" , nullable = false, unique = true)
 	private String projectCode;
-
 }
