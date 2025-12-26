@@ -1,8 +1,12 @@
 package com.practise.project.entity;
 
+import java.util.Set;
+
 import com.practise.project.model.AuditableEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +30,9 @@ public class Department extends AuditableEntity{
 	private String deptCode;	
 	
 	@Column(name = "description", nullable = false )
-	private String description;		
+	private String description;	
+	
+	@OneToMany(mappedBy = "department" , cascade = CascadeType.ALL)
+	private Set<Employee> employees;	
 }
 	//manager
