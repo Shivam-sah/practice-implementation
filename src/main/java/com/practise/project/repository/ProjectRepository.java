@@ -9,4 +9,6 @@ public interface ProjectRepository extends JpaRepository<Project,Integer> {
 
 	Optional<Project> findByProjectCodeAndActive(String projectName, boolean b);
 
+	Optional<Project> findByIdAndActive(Integer id, boolean b);
+
 }

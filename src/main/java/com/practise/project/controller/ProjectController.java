@@ -32,9 +32,9 @@ public class ProjectController {
 	private final ProjectService projectService;
 	
 	
-	@PostMapping(value = ApiConstant.EP_CREATE_PROJECT,consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = ApiConstant.EP_CREATE_PROJECT)
     @Operation(summary = "Create Project", description = "Create Project")
-    public ResponseEntity<ApiResponse> createProject(@RequestBody ProjectDto request) throws Exception {
+    public ResponseEntity<?> createProject(@RequestBody ProjectDto request) throws Exception {
         log.info("projectcontroller::createproject " + request);
         try {
         //	ProjectDto project = projectService.createProject(request);

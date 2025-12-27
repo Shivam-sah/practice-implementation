@@ -1,15 +1,19 @@
 package com.practise.project.service;
 
+import org.springframework.data.domain.Page;
+
+import com.practise.project.builder.Paging;
 import com.practise.project.dto.DepartmentDto;
-import com.practise.project.entity.Department;
 
 public interface DepartmentService {
 
-	Department createdepartment(DepartmentDto req) throws Exception;
+	DepartmentDto createDepartment(DepartmentDto req) throws Exception;
 
-	Department updatedepartment(DepartmentDto req) throws Exception;
+	DepartmentDto updateDepartment(DepartmentDto req) throws Exception;
 
-	Department getdepartment(Integer id) throws Exception;
+	DepartmentDto getDepartment(Integer id) throws Exception;
 
-	Boolean deletedepartment(Integer id) throws Exception;
+	DepartmentDto deleteDepartment(Integer id) throws Exception;
+	
+	Page<DepartmentDto> getAllDepartment(Paging req) throws Exception;
 }

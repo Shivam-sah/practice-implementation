@@ -32,7 +32,7 @@ public class Department extends AuditableEntity{
 	@Column(name = "description", nullable = false )
 	private String description;	
 	
-//	@OneToMany(mappedBy = "department" , cascade = CascadeType.ALL)
-//	private Set<Employee> employees;	
+	@OneToMany(mappedBy = "department" , cascade = CascadeType.ALL)
+	private Set<Employee> employees;	
 }
 	//manager

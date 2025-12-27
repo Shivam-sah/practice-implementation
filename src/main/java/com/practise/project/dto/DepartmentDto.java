@@ -12,3 +12,4 @@ public class DepartmentDto {
 	private String deptCode;
 	private String description;
 }
+

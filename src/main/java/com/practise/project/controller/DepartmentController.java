@@ -1,5 +1,8 @@
 package com.practise.project.controller;
 
+import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,10 +12,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.practise.project.builder.ApiResponse;
+import com.practise.project.builder.ApiResponseBuilder;
+import com.practise.project.builder.Paging;
 import com.practise.project.dto.DepartmentDto;
+import com.practise.project.dto.ProjectDto;
 import com.practise.project.entity.Department;
+import com.practise.project.exception.BadApiRequestException;
 import com.practise.project.service.DepartmentService;
 import com.practise.project.utils.ApiConstant;
+
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,27 +38,89 @@ public class DepartmentController {
 	private final DepartmentService departmentService;
 	
 	@PostMapping(value = ApiConstant.EP_CREATE_DEPARTMENT)
-	public Department createDepartment(@RequestBody DepartmentDto req) throws Exception{
-		Department res = departmentService.createdepartment(req);
-		return null;
-	}
+    @Operation(summary = "Create Department", description = "Create Department")
+    public ResponseEntity<ApiResponse> createProject(@RequestBody @Valid DepartmentDto request) throws Exception {
+        log.info("projectcontroller::createDepartment " + request);
+        try {
+        	DepartmentDto department = departmentService.createDepartment(request);
+        	return ApiResponseBuilder.getSuccessResponse(department, "Project created successfully", HttpStatus.CREATED);
+        } catch (BadApiRequestException ex) {
+            log.error("bad api request in creatign Department", ex.getMessage());
+            throw ex;
+        } catch (Exception ex) {
+            log.error("exception in creating Department");
+            return ApiResponseBuilder.getErrorResponse(null, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+        }
+    }
 	
-	@PutMapping(value = ApiConstant.EP_UPDATE_DEPARTMENT)
-	public Department updateDepartment(@RequestBody DepartmentDto req) throws Exception{
-		Department res = departmentService.updatedepartment(req);
-		return null;
-	}
 	
 	@GetMapping(value = ApiConstant.EP_GET_DEPARTMENT)
-	public Department getDepartment(@PathVariable(value = "id") Integer id) throws Exception{
-		Department res = departmentService.getdepartment(id);
-		return null;
+	@Operation(summary = "Get Department", description = "Get Department")
+	public ResponseEntity<ApiResponse> getProject(@PathVariable Integer id) throws Exception {
+		log.info("projectcontroller::getDepartment " + id);
+		try {
+			DepartmentDto department = departmentService.getDepartment(id);
+			return ApiResponseBuilder.getSuccessResponse(department, "Department fetched successfully", HttpStatus.OK);
+		} catch (BadApiRequestException ex) {
+			log.error("bad api request in fetching Department", ex.getMessage());
+			throw ex;
+		} catch (Exception ex) {
+			log.error("exception in fetching Department");
+			return ApiResponseBuilder.getErrorResponse(null, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+		}
 	}
 	
+	
+	
 	@DeleteMapping(value = ApiConstant.EP_DELETE_DEPARTMENT)
-	public Department deleteDepartment(@PathVariable(value = "id") Integer id) throws Exception{
-		Boolean res = departmentService.deletedepartment(id);
-		return null;
+	@Operation(summary = "Delete Department", description = "Delete Department")
+	public ResponseEntity<ApiResponse> deleteProject(@PathVariable Integer id) throws Exception {
+		log.info("projectcontroller::deleteDepartment " + id);
+		try {
+			DepartmentDto res = departmentService.deleteDepartment(id);
+			return ApiResponseBuilder.getSuccessResponse(res, "Department Deleted successfully", HttpStatus.OK);
+		} catch (BadApiRequestException ex) {
+			log.error("bad api request in deleting Department", ex.getMessage());
+			throw ex;
+		} catch (Exception ex) {
+			log.error("exception in deleting Department");
+			return ApiResponseBuilder.getErrorResponse(null, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+		}
+	}
+	
+	
+	@PutMapping(value = ApiConstant.EP_UPDATE_DEPARTMENT)
+	@Operation(summary = "Update Department", description = "Update Department")
+	public ResponseEntity<ApiResponse> updateProject(@RequestBody @Valid DepartmentDto request) throws Exception {
+		log.info("projectcontroller::updateDepartment " + request);
+		try {
+			DepartmentDto res = departmentService.updateDepartment(request);
+			return ApiResponseBuilder.getSuccessResponse(res, "Department Updated successfully", HttpStatus.OK);
+		} catch (BadApiRequestException ex) {
+			log.error("bad api request in updating Department", ex.getMessage());
+			throw ex;
+		} catch (Exception ex) {
+			log.error("exception in updating Department");
+			return ApiResponseBuilder.getErrorResponse(null, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+		}
+	}
+	
+	
+	
+	@PostMapping(value = ApiConstant.EP_ALL_DEPARTMENT)
+	@Operation(summary = "Get All Department", description = "Get All Department")
+	public ResponseEntity<ApiResponse> getAllProject(@RequestBody Paging req) throws Exception {
+		log.info("projectcontroller::getAllDepartment " + req);
+		try {
+			Page<DepartmentDto> departments = departmentService.getAllDepartment(req);
+			 return ApiResponseBuilder.getPaginationSuccessResponse(departments, "Department List", HttpStatus.OK);
+		} catch (BadApiRequestException ex) {
+			log.error("bad api request in fetching all Department", ex.getMessage());
+			throw ex;
+		} catch (Exception ex) {
+			log.error("exception in fetching all Department");
+			return ApiResponseBuilder.getErrorResponse(null, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
+		}
 	}
 	
 }

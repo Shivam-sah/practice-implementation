@@ -9,4 +9,9 @@ public class FieldError implements Serializable{
 	private String field;	  
 	private String error;	  
 	private String errorCode;
+	
+	public FieldError(String field, String error) {
+        this.field = field;
+        this.error = error;
+    }
 }

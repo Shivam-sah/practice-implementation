@@ -1,17 +1,18 @@
 package com.practise.project.exception;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import com.practise.project.builder.ApiResponse;
 import com.practise.project.builder.ApiResponseBuilder;
 import com.practise.project.builder.FieldError;
 import com.practise.project.builder.ResponseConstant;
+import jakarta.validation.ConstraintViolationException;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,30 +35,30 @@ public class GlobalExceptionHandler {
         return ApiResponseBuilder.getErrorResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-//    @ExceptionHandler({MethodArgumentNotValidException.class})
-//    public ResponseEntity<ApiResponse> handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-//        List<FieldError> fieldErrors = new ArrayList(5);
-//        ex.getBindingResult().getAllErrors().forEach((error) -> {
-//            String fieldName = ((org.springframework.validation.FieldError)error).getField();
-//            String errorMessage = error.getDefaultMessage();
-//            fieldErrors.add(new FieldError(fieldName, errorMessage));
-//        });
-//        return ApiResponseBuilder.getErrorResponse((Object)null, "Validation Failed", HttpStatus.BAD_REQUEST, fieldErrors);
-//    }
-//
-//    @ExceptionHandler({ConstraintViolationException.class})
-//    public ResponseEntity<ApiResponse> handlerConstraintViolationException(ConstraintViolationException ex) {
-//        List<FieldError> fieldErrors = new ArrayList(5);
-//        if (ex.getConstraintViolations() != null && !ex.getConstraintViolations().isEmpty()) {
-//            ex.getConstraintViolations().forEach((violation) -> {
-//                String fieldName = violation.getPropertyPath().toString();
-//                String errorMessage = violation.getMessage();
-//                fieldErrors.add(new FieldError(fieldName, errorMessage));
-//            });
-//        }
-//
-//        return ApiResponseBuilder.getErrorResponse((Object)null, "Validation Failed", HttpStatus.BAD_REQUEST, fieldErrors);
-//    }
+    @ExceptionHandler({MethodArgumentNotValidException.class})
+    public ResponseEntity<ApiResponse> handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+        List<FieldError> fieldErrors = new ArrayList(5);
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((org.springframework.validation.FieldError)error).getField();
+            String errorMessage = error.getDefaultMessage();
+            fieldErrors.add(new FieldError(fieldName, errorMessage));
+        });
+        return ApiResponseBuilder.getErrorResponse((Object)null, "Validation Failed", HttpStatus.BAD_REQUEST, fieldErrors);
+    }
+
+    @ExceptionHandler({ConstraintViolationException.class})
+    public ResponseEntity<ApiResponse> handlerConstraintViolationException(ConstraintViolationException ex) {
+        List<FieldError> fieldErrors = new ArrayList(5);
+        if (ex.getConstraintViolations() != null && !ex.getConstraintViolations().isEmpty()) {
+            ex.getConstraintViolations().forEach((violation) -> {
+                String fieldName = violation.getPropertyPath().toString();
+                String errorMessage = violation.getMessage();
+                fieldErrors.add(new FieldError(fieldName, errorMessage));
+            });
+        }
+
+        return ApiResponseBuilder.getErrorResponse((Object)null, "Validation Failed", HttpStatus.BAD_REQUEST, fieldErrors);
+    }
 
     @ExceptionHandler({IllegalArgumentException.class})
     public ResponseEntity<ApiResponse> handleIllegalArgumentException(IllegalArgumentException ex) {

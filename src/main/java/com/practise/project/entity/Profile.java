@@ -1,24 +1,22 @@
 package com.practise.project.entity;
 
 import com.practise.project.model.AuditableEntity;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name="tbl_profile")
-@EqualsAndHashCode(callSuper = true)
 public class Profile extends AuditableEntity{
 		
 	@Column(name = "location")
@@ -30,8 +28,9 @@ public class Profile extends AuditableEntity{
 	@Column(name = "role")
 	private String role;
 	
-	@OneToOne(cascade = CascadeType.ALL)
+	
+	@OneToOne(mappedBy = "profile" ,cascade = CascadeType.ALL)
 //	@OneToOne
-	@JoinColumn(name = "emp_id")
+//	@JoinColumn(name = "emp_id")
 	private Employee employee;
 }
