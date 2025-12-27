@@ -1,9 +1,7 @@
 package com.practise.project.entity;
 
 import java.util.Set;
-
 import com.practise.project.model.AuditableEntity;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -23,7 +21,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Department extends AuditableEntity{
 	
-	@Column(name = "dept_name", nullable = false , length  = 50)
+	@Column(name = "dept_name", nullable = false ,unique = true, length  = 50)
 	private String deptName;
 	
 	@Column(name = "dept_Code", nullable = false, unique = true, length = 10)
@@ -32,7 +30,8 @@ public class Department extends AuditableEntity{
 	@Column(name = "description", nullable = false )
 	private String description;	
 	
-	@OneToMany(mappedBy = "department" , cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "department" )
+//	@JsonManagedReference
 	private Set<Employee> employees;	
 }
 	//manager

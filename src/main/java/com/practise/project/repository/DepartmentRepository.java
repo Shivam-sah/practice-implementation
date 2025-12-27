@@ -9,4 +9,6 @@ public interface DepartmentRepository extends JpaRepository<Department,Integer> 
 
 	Optional<Department> findByDeptCodeAndActive(String deptCode, boolean active);
 
+	Optional<Department> findByIdAndActive(Integer id, boolean b);
+
 }
