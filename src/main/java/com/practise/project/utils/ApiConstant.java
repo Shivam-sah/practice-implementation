@@ -24,9 +24,10 @@ public class ApiConstant {
 	public static final String EP_ALL_PROJECT = "/all-project";	
 	
 	
-	/* ENDPOINTS DEPARTMENT*/	
+	/* ENDPOINTS EMPLOYEE*/	
 	public static final String EP_CREATE_EMPLOYEE = "/create-employee";
 	public static final String EP_UPDATE_EMPLOYEE = "/update-employee";
 	public static final String EP_GET_EMPLOYEE = "/get-employee/{id}";
 	public static final String EP_DELETE_EMPLOYEE = "/delete-employee/{id}";
+	public static final String EP_ALL_EMPLOYEE = "/all-employee";
 }

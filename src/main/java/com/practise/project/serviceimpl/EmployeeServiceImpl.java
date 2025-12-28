@@ -1,15 +1,20 @@
 package com.practise.project.serviceimpl;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import com.practise.project.builder.Paging;
 import com.practise.project.dto.EmployeeCreateDto;
 import com.practise.project.dto.EmployeeDto;
+import com.practise.project.dto.EmployeeUpdateDto;
 import com.practise.project.dto.ProjectDto;
 import com.practise.project.entity.Department;
 import com.practise.project.entity.Employee;
@@ -17,6 +22,7 @@ import com.practise.project.entity.Profile;
 import com.practise.project.entity.Project;
 import com.practise.project.entity.Employee;
 import com.practise.project.exception.BadApiRequestException;
+import com.practise.project.exception.ResourceNotFoundException;
 import com.practise.project.repository.DepartmentRepository;
 import com.practise.project.repository.EmployeeRepository;
 import com.practise.project.repository.ProjectRepository;
@@ -36,10 +42,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 	
 
 	@Override
-	public EmployeeDto getEmployeeById(Integer id) throws Exception{
+	public EmployeeDto getEmployeeById(Long id) throws Exception{
 		try {
 			Employee employee = employeeRepo.findByIdAndActive(id, true).orElseThrow( () -> new BadApiRequestException("Employee with this Id do not exists"));	
-			System.out.println(employee);
 			return modelMapper.map(employee, EmployeeDto.class);			
 		}catch (Exception ex) {
 			throw ex;
@@ -50,45 +55,44 @@ public class EmployeeServiceImpl implements EmployeeService {
 	@Override
 	public EmployeeDto createEmployee(EmployeeCreateDto request) {
 		try {
-			Optional<Employee> emp = employeeRepo.findByMobileNumberAndActive(request.getMobileNumber(),true);
-			if(emp.isPresent()) {
-				throw new BadApiRequestException("Employee Already exists");
-			}
-			Set<Project> projects = null;
-			if (!request.getProjectIds().isEmpty()) {
-			    projects = request.getProjectIds().stream()
-			        .map(id -> projectRepository.findByIdAndActive(id, true)
-			            .orElseThrow(() -> new RuntimeException("Project not found: " + id)))
-			        .collect(Collectors.toSet());
-			}
-			
-			Department department = null;
-			if(request.getDepartmentId() != null) {
-				department = deptRepo.findByIdAndActive(request.getDepartmentId(), true).orElseThrow(() -> new BadApiRequestException("Department Do not Exists"));
-			}
 
-			Employee employee = modelMapper.map(request, Employee.class);
-			employee.setProjects(projects);
-			employee.setDepartment(department);
-			
-			Profile profile = employee.getProfile();
-			if (profile != null) {
-			    employee.setProfile(profile); // maintains both sides safely
-			}
+		    employeeRepo.findByMobileNumberAndActive(request.getMobileNumber(), true)
+		            .ifPresent(emp -> {
+		                throw new BadApiRequestException("Employee already exists");
+		            });
 
-			//employee.getProfile().setEmployee(employee);
-			
-			Employee savedEmployee = employeeRepo.save(employee);			
-			return modelMapper.map(savedEmployee, EmployeeDto.class);
-			
+		    Set<Project> projects = Collections.emptySet();
+		    if (request.getProjectIds() != null && !request.getProjectIds().isEmpty()) {
+		        projects = request.getProjectIds().stream()
+		                .map(id -> projectRepository.findByIdAndActive(id, true)
+		                        .orElseThrow(() -> new BadApiRequestException("Project not found: " + id)))
+		                .collect(Collectors.toSet());
+		    }
+
+		    Department department = null;
+		    if (request.getDepartmentId() != null) {
+		        department = deptRepo.findByIdAndActive(request.getDepartmentId(), true)
+		                .orElseThrow(() -> new BadApiRequestException("Department does not exist"));
+		    }
+
+		    Employee employee = modelMapper.map(request, Employee.class);
+		    employee.setId(null);
+		    employee.setProjects(projects);
+		    employee.setDepartment(department);
+		    employee.setProfile(employee.getProfile());
+
+		    Employee savedEmployee = employeeRepo.save(employee);
+		    
+		    return modelMapper.map(savedEmployee, EmployeeDto.class);			
 		}catch(Exception Ex) {
+			Ex.printStackTrace();
 			throw Ex;
 		}
 	}
 
 
 	@Override
-	public EmployeeDto deleteEmployeeById(Integer id) {
+	public EmployeeDto deleteEmployeeById(Long id) {
 		try {			
 			Optional<Employee> employee = employeeRepo.findByIdAndActive(id, true);
 			if (!employee.isPresent()) {
@@ -106,9 +110,9 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
 	@Override
-	public EmployeeDto updateEmployee(@Valid EmployeeDto request) {
+	public EmployeeDto updateEmployee(@Valid EmployeeUpdateDto request) {
 		try {
-			Employee emp = employeeRepo.findByMobileNumberAndActive(request.getMobileNumber(), true).orElseThrow( () -> new BadApiRequestException("Employee with this Id do not exists"));
+			Employee emp = employeeRepo.findByIdAndActive(request.getId(), true).orElseThrow( () -> new BadApiRequestException("Employee with this Id do not exists"));
 			Set<Project> projects = null;
 			if (!request.getProjectIds().isEmpty()) {
 			    projects = request.getProjectIds().stream()
@@ -117,15 +121,43 @@ public class EmployeeServiceImpl implements EmployeeService {
 			        .collect(Collectors.toSet());
 			}
 			
-			
-			Employee employee = modelMapper.map(request, Employee.class);
-			employee.getProfile().setEmployee(employee);
-			employee.setProjects(projects);
-			Employee savedEmployee = employeeRepo.save(employee);			
-			return modelMapper.map(savedEmployee, EmployeeDto.class);						
+			Department department = null;
+		    if (request.getDepartmentId() != null) {
+		        department = deptRepo.findByIdAndActive(request.getDepartmentId(), true)
+		                .orElseThrow(() -> new BadApiRequestException("Department does not exist"));
+		    }
+		    
+		    emp.setProjects(projects);
+		    emp.setDepartment(department);
+		    emp.setProfile(modelMapper.map(request.getProfile(), Profile.class));
+		    emp.setName(request.getName());
+		    emp.setEmail(request.getEmail());
+
+		    Employee savedEmployee = employeeRepo.save(emp);			
+		    return modelMapper.map(savedEmployee, EmployeeDto.class);																
 		}catch(Exception ex) {
 			throw ex;
 		}
+	}
+
+
+	@Override
+	public Page<EmployeeDto> getAllEmployee(Paging req) {
+		try {
+			Pageable pageableInstance = req.getPageableInstance();
+			Page<Employee> employeeList = employeeRepo.findByActive(true,pageableInstance);
+			if (employeeList.getContent().isEmpty() || employeeList.isEmpty()) {
+				throw new ResourceNotFoundException("Project list not found");
+			}
+			
+			Page<EmployeeDto> dtoPage = employeeList.map(employee ->
+	        	modelMapper.map(employee, EmployeeDto.class)
+			);
+			return dtoPage;			
+		}catch(Exception ex) {
+			throw ex;
+		}
+		
 	}
 
 }

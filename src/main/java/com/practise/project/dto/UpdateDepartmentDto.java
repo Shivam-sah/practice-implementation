@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class UpdateDepartmentDto {
 	
 	@NotNull(message = "Id can not be null")
-	private Integer id;
+	private Long id;
 	
 	@NotNull(message = "Department Name can not be null")
     @NotBlank(message = "Department Name can not be blank")

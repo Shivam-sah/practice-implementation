@@ -1,11 +1,6 @@
 package com.practise.project.dto;
 
 import java.util.List;
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.practise.project.entity.Department;
-import com.practise.project.entity.Project;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -15,8 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeDto {	
-	private Long id;
+public class EmployeeUpdateDto {
+	
+	@NotNull(message = "Id can not be Null")
+	private Long Id;
 	
 	@NotNull(message = "Name can not be Null")
 	@NotBlank(message = "Name can not be blank")
@@ -26,14 +23,9 @@ public class EmployeeDto {
 	@NotBlank(message = "Email can not be blank")
 	private String email;
 	
+	private ProfileDto profile;
 	
-	@NotNull(message = "Mobile Number can not be Null")
-	@NotBlank(message = "Mobile Number can not be blank")
-	private String mobileNumber;
+	private List<Long> projectIds;
 	
-	private ProfileDto profile; 
-	
-	private Set<ProjectDto> projects;
-	
-	private DepartmentDto department;
+	private Long departmentId;
 }

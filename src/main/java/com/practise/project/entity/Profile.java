@@ -18,13 +18,14 @@ import lombok.Setter;
 @Table(name = "profile")
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Profile extends AuditableEntity {
 
-    @EqualsAndHashCode.Include
-    private Long id;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5994483598824842648L;
 
-    @Column(name = "location")
+	@Column(name = "location")
     private String location;
 
     @Column(name = "career_level")
@@ -34,8 +35,7 @@ public class Profile extends AuditableEntity {
     private String role;
 
     @OneToOne(mappedBy = "profile" ,fetch = FetchType.LAZY)
- //   @JoinColumn(name = "employee_id")
-    @JsonBackReference
+ // @JoinColumn(name = "employee_id")
     private Employee employee;
 }
 

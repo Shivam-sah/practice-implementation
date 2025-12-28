@@ -7,6 +7,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.practise.project.builder.Paging;
 import com.practise.project.dto.DepartmentDto;
+import com.practise.project.dto.DepartmentDtoDup;
 import com.practise.project.dto.ProjectDto;
 import com.practise.project.dto.UpdateDepartmentDto;
 import com.practise.project.entity.Department;
@@ -54,17 +55,18 @@ public class DepartmentServiceImpl implements DepartmentService {
 	
 	
 	@Override
-	public DepartmentDto getDepartment(Integer id) throws Exception {
+	public DepartmentDtoDup getDepartment(Long id) throws Exception {
 		try {
 			Department department = deptRepo.findByIdAndActive(id, true).orElseThrow(() -> new BadApiRequestException("Department Do not Exists"));
-			return modelMapper.map(department, DepartmentDto.class);			
+			return modelMapper.map(department, DepartmentDtoDup.class);			
 		}catch(Exception ex){
+			ex.printStackTrace();
 			throw ex;
 		}
 		
 	}
 	@Override
-	public DepartmentDto deleteDepartment(Integer id) throws Exception {
+	public DepartmentDto deleteDepartment(Long id) throws Exception {
 		try {
 			Department department = deptRepo.findByIdAndActive(id, true).orElseThrow(() -> new BadApiRequestException("Department Do not Exists"));
 			department.setActive(false);
@@ -75,7 +77,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 		}
 	}
 	@Override
-	public Page<DepartmentDto> getAllDepartment(Paging req) throws Exception {
+	public Page<DepartmentDtoDup> getAllDepartment(Paging req) throws Exception {
 		try {
 			Pageable pageableInstance = req.getPageableInstance();
 			Page<Department> departmentList = deptRepo.findByActive(true,pageableInstance);
@@ -83,8 +85,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 				throw new ResourceNotFoundException("Project list not found");
 			}
 			
-			Page<DepartmentDto> dtoPage = departmentList.map(department ->
-	        	modelMapper.map(department, DepartmentDto.class)
+			Page<DepartmentDtoDup> dtoPage = departmentList.map(department ->
+	        	modelMapper.map(department, DepartmentDtoDup.class)
 			);
 			return dtoPage;	
 		}catch(Exception ex){

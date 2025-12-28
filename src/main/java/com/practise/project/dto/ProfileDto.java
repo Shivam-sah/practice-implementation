@@ -17,7 +17,7 @@ public class ProfileDto {
 	
 	@NotNull(message = "careerLevel can not be Null")
 	@NotBlank(message = "careerLevel can not be blank")
-	private Integer careerLevel;
+	private Long careerLevel;
 	
 	@NotNull(message = "Role can not be Null")
 	@NotBlank(message = "Role can not be blank")

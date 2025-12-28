@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class UpdateProjectDto {
 	
 	@NotNull(message = "Id can not be null")
-	private Integer id;
+	private Long id;
 	
 	@NotNull(message = "Project Name can not be null")
     @NotBlank(message = "Project Name can not be blank")

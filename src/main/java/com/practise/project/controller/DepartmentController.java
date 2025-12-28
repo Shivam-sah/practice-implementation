@@ -17,6 +17,7 @@ import com.practise.project.builder.ApiResponse;
 import com.practise.project.builder.ApiResponseBuilder;
 import com.practise.project.builder.Paging;
 import com.practise.project.dto.DepartmentDto;
+import com.practise.project.dto.DepartmentDtoDup;
 import com.practise.project.dto.ProjectDto;
 import com.practise.project.dto.UpdateDepartmentDto;
 import com.practise.project.entity.Department;
@@ -57,10 +58,10 @@ public class DepartmentController {
 	
 	@GetMapping(value = ApiConstant.EP_GET_DEPARTMENT)
 	@Operation(summary = "Get Department", description = "Get Department")
-	public ResponseEntity<ApiResponse> getProject(@PathVariable Integer id) throws Exception {
+	public ResponseEntity<ApiResponse> getProject(@PathVariable Long id) throws Exception {
 		log.info("projectcontroller::getDepartment " + id);
 		try {
-			DepartmentDto department = departmentService.getDepartment(id);
+			DepartmentDtoDup department = departmentService.getDepartment(id);
 			return ApiResponseBuilder.getSuccessResponse(department, "Department fetched successfully", HttpStatus.OK);
 		} catch (BadApiRequestException ex) {
 			log.error("bad api request in fetching Department", ex.getMessage());
@@ -75,7 +76,7 @@ public class DepartmentController {
 	
 	@DeleteMapping(value = ApiConstant.EP_DELETE_DEPARTMENT)
 	@Operation(summary = "Delete Department", description = "Delete Department")
-	public ResponseEntity<ApiResponse> deleteProject(@PathVariable Integer id) throws Exception {
+	public ResponseEntity<ApiResponse> deleteProject(@PathVariable Long id) throws Exception {
 		log.info("projectcontroller::deleteDepartment " + id);
 		try {
 			DepartmentDto res = departmentService.deleteDepartment(id);
@@ -105,15 +106,14 @@ public class DepartmentController {
 			return ApiResponseBuilder.getErrorResponse(null, ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, null);
 		}
 	}
-	
-	
+		
 	
 	@PostMapping(value = ApiConstant.EP_ALL_DEPARTMENT)
 	@Operation(summary = "Get All Department", description = "Get All Department")
 	public ResponseEntity<ApiResponse> getAllProject(@RequestBody Paging req) throws Exception {
 		log.info("projectcontroller::getAllDepartment " + req);
 		try {
-			Page<DepartmentDto> departments = departmentService.getAllDepartment(req);
+			Page<DepartmentDtoDup> departments = departmentService.getAllDepartment(req);
 			 return ApiResponseBuilder.getPaginationSuccessResponse(departments, "Department List", HttpStatus.OK);
 		} catch (BadApiRequestException ex) {
 			log.error("bad api request in fetching all Department", ex.getMessage());

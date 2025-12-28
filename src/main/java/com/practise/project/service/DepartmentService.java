@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 
 import com.practise.project.builder.Paging;
 import com.practise.project.dto.DepartmentDto;
+import com.practise.project.dto.DepartmentDtoDup;
 import com.practise.project.dto.UpdateDepartmentDto;
 
 public interface DepartmentService {
@@ -12,9 +13,9 @@ public interface DepartmentService {
 
 	DepartmentDto updateDepartment(UpdateDepartmentDto req) throws Exception;
 
-	DepartmentDto getDepartment(Integer id) throws Exception;
+	DepartmentDtoDup getDepartment(Long id) throws Exception;
 
-	DepartmentDto deleteDepartment(Integer id) throws Exception;
+	DepartmentDto deleteDepartment(Long id) throws Exception;
 	
-	Page<DepartmentDto> getAllDepartment(Paging req) throws Exception;
+	Page<DepartmentDtoDup> getAllDepartment(Paging req) throws Exception;
 }

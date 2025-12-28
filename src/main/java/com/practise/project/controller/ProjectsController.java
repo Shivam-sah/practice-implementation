@@ -16,6 +16,7 @@ import com.practise.project.builder.ApiResponse;
 import com.practise.project.builder.ApiResponseBuilder;
 import com.practise.project.builder.Paging;
 import com.practise.project.dto.ProjectDto;
+import com.practise.project.dto.ProjectDtoDup;
 import com.practise.project.dto.UpdateProjectDto;
 import com.practise.project.exception.BadApiRequestException;
 import com.practise.project.service.ProjectService;
@@ -54,10 +55,10 @@ public class ProjectsController {
 	
 	@GetMapping(value = ApiConstant.EP_GET_PROJECT)
 	@Operation(summary = "Get Project", description = "Get Project")
-	public ResponseEntity<ApiResponse> getProject(@PathVariable Integer id) throws Exception {
+	public ResponseEntity<ApiResponse> getProject(@PathVariable Long id) throws Exception {
 		log.info("projectcontroller::getproject " + id);
 		try {
-			ProjectDto project = projectService.getProject(id);
+			ProjectDtoDup project = projectService.getProject(id);
 			return ApiResponseBuilder.getSuccessResponse(project, "Project fetched successfully", HttpStatus.OK);
 		} catch (BadApiRequestException ex) {
 			log.error("bad api request in fetching project", ex.getMessage());
@@ -72,7 +73,7 @@ public class ProjectsController {
 	
 	@DeleteMapping(value = ApiConstant.EP_DELETE_PROJECT)
 	@Operation(summary = "Delete Project", description = "Delete Project")
-	public ResponseEntity<ApiResponse> deleteProject(@PathVariable Integer id) throws Exception {
+	public ResponseEntity<ApiResponse> deleteProject(@PathVariable Long id) throws Exception {
 		log.info("projectcontroller::deleteproject " + id);
 		try {
 			ProjectDto res = projectService.deleteProject(id);
@@ -110,7 +111,7 @@ public class ProjectsController {
 	public ResponseEntity<ApiResponse> getAllProject(@RequestBody Paging req) throws Exception {
 		log.info("projectcontroller::getAllproject " + req);
 		try {
-			Page<ProjectDto> projects = projectService.getAllProject(req);
+			Page<ProjectDtoDup> projects = projectService.getAllProject(req);
 			 return ApiResponseBuilder.getPaginationSuccessResponse(projects, "Project List", HttpStatus.OK);
 		} catch (BadApiRequestException ex) {
 			log.error("bad api request in fetching all project", ex.getMessage());

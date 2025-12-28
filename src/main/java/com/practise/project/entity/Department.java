@@ -10,18 +10,20 @@ import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name="tbl_department")
-@EqualsAndHashCode(callSuper = true)
 public class Department extends AuditableEntity{
-	
+		
 	@Column(name = "dept_name", nullable = false , /*unique = true */length  = 50)
 	private String deptName;
 	
@@ -32,7 +34,6 @@ public class Department extends AuditableEntity{
 	private String description;	
 	
 	@OneToMany(mappedBy = "department" )
-//	@JsonManagedReference
-	private Set<Employee> employees =  new HashSet<>();;	
+	private Set<Employee> employees =  new HashSet<>();	
 }
 	//manager

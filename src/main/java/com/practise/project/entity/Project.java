@@ -21,11 +21,7 @@ import lombok.Setter;
 @Table(name = "project")
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Project extends AuditableEntity {
-
-    @EqualsAndHashCode.Include
-    private Long id;
 
     @Column(name = "project_name", nullable = false)
     private String projectName;
@@ -34,7 +30,6 @@ public class Project extends AuditableEntity {
     private String projectCode;
 
     @ManyToMany(mappedBy = "projects")
-    @JsonIgnore
     private Set<Employee> employees = new HashSet<>();
 }
 

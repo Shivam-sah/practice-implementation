@@ -1,8 +1,5 @@
 package com.practise.project.dto;
 
-import java.util.Set;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -28,7 +25,4 @@ public class ProjectDto {
 	@NotNull(message = "Project Code can not be null")
     @NotBlank(message = "Project Code can not be blank")
 	private String projectCode;
-	
-//	@JsonBackReference
-//	private Set<EmployeeDto> employee;
 }

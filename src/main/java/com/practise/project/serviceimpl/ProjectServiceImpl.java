@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.practise.project.builder.Paging;
 import com.practise.project.dto.ProjectDto;
+import com.practise.project.dto.ProjectDtoDup;
 import com.practise.project.dto.UpdateProjectDto;
 import com.practise.project.entity.Project;
 import com.practise.project.exception.BadApiRequestException;
@@ -44,10 +45,10 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public ProjectDto getProject(Integer id) {
+	public ProjectDtoDup getProject(Long id) {
 		try {
 			Project project = projectRepository.findByIdAndActive(id, true).orElseThrow( () -> new BadApiRequestException("Project with this Id do not exists"));		
-			return modelMapper.map(project, ProjectDto.class);
+			return modelMapper.map(project, ProjectDtoDup.class);
 		} catch (Exception ex) {
 			throw ex;
 		}
@@ -55,7 +56,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public ProjectDto deleteProject(Integer id) {
+	public ProjectDto deleteProject(Long id) {
 		try {
 			Optional<Project> project = projectRepository.findByIdAndActive(id, true);
 			if (!project.isPresent()) {
@@ -85,7 +86,7 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public Page<ProjectDto> getAllProject(Paging req) {
+	public Page<ProjectDtoDup> getAllProject(Paging req) {
 		try {
 			Pageable pageableInstance = req.getPageableInstance();
 			Page<Project> projectList = projectRepository.findByActive(true,pageableInstance);
@@ -93,8 +94,8 @@ public class ProjectServiceImpl implements ProjectService{
 				throw new ResourceNotFoundException("Project list not found");
 			}
 			
-			Page<ProjectDto> dtoPage = projectList.map(project ->
-	        	modelMapper.map(project, ProjectDto.class)
+			Page<ProjectDtoDup> dtoPage = projectList.map(project ->
+	        	modelMapper.map(project, ProjectDtoDup.class)
 			);
 			return dtoPage;			
 		}catch(Exception ex) {

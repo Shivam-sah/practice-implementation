@@ -9,10 +9,10 @@ import com.practise.project.entity.Project;
 
 public interface ProjectRepository extends JpaRepository<Project,Integer> {
 
-	Optional<Project> findByProjectCodeAndActive(String projectName, boolean b);
+	Optional<Project> findByProjectCodeAndActive(String projectName, Boolean b);
 
-	Optional<Project> findByIdAndActive(Integer id, boolean b);
+	Optional<Project> findByIdAndActive(Long id, boolean b);
 
-	Page<Project> findByActive(boolean b, Pageable pageableInstance);
+	Page<Project> findByActive(Boolean b, Pageable pageableInstance);
 
 }

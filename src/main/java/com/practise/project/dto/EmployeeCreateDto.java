@@ -10,8 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class EmployeeCreateDto {
-	
+public class EmployeeCreateDto {	
 	
 	@NotNull(message = "Name can not be Null")
 	@NotBlank(message = "Name can not be blank")
@@ -29,8 +28,7 @@ public class EmployeeCreateDto {
 
 	private ProfileDto profile;
 	
-	private List<Integer> projectIds;
+	private List<Long> projectIds;
 	
-	private Integer departmentId;
-
+	private Long departmentId;
 }

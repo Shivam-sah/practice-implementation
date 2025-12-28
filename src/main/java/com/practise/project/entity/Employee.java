@@ -2,7 +2,6 @@ package com.practise.project.entity;
 
 import java.util.HashSet;
 import java.util.Set;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.practise.project.model.AuditableEntity;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,11 +23,7 @@ import lombok.Setter;
 @Table(name = "employee")
 @Getter
 @Setter
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Employee extends AuditableEntity {
-
-    @EqualsAndHashCode.Include
-    private Long id;
 
     @Column(name = "emp_name", nullable = false)
     private String name;
@@ -41,8 +36,7 @@ public class Employee extends AuditableEntity {
 
     /* ---------------- One-to-One Profile ---------------- */
 
-    @OneToOne(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Profile profile;
 
     /* ---------------- Department ---------------- */
