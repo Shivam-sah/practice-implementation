@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.practise.project.builder.Paging;
 import com.practise.project.dto.ProjectDto;
+import com.practise.project.dto.UpdateProjectDto;
 import com.practise.project.entity.Project;
 import com.practise.project.exception.BadApiRequestException;
 import com.practise.project.exception.ResourceNotFoundException;
@@ -71,10 +72,12 @@ public class ProjectServiceImpl implements ProjectService{
 	}
 
 	@Override
-	public ProjectDto updateProject(@Valid ProjectDto request) {
+	public ProjectDto updateProject(@Valid UpdateProjectDto request) {
 		try {
-			Project project = projectRepository.findByProjectCodeAndActive(request.getProjectCode(),true).orElseThrow( () -> new BadApiRequestException("Project with this code do not exists"));			
-			Project savedProject = projectRepository.save(modelMapper.map(request, Project.class));			
+			Project project = projectRepository.findByIdAndActive(request.getId(),true).orElseThrow( () -> new BadApiRequestException("Project with this code do not exists"));	
+			project.setProjectName(request.getProjectName());
+			project.setProjectCode(request.getProjectCode());
+			Project savedProject = projectRepository.save(project);			
 			return modelMapper.map(savedProject, ProjectDto.class);		
 		} catch (Exception ex) {
 			throw ex;
@@ -85,7 +88,7 @@ public class ProjectServiceImpl implements ProjectService{
 	public Page<ProjectDto> getAllProject(Paging req) {
 		try {
 			Pageable pageableInstance = req.getPageableInstance();
-			Page<Project> projectList = projectRepository.findAll(pageableInstance);
+			Page<Project> projectList = projectRepository.findByActive(true,pageableInstance);
 			if (projectList.getContent().isEmpty() || projectList.isEmpty()) {
 				throw new ResourceNotFoundException("Project list not found");
 			}

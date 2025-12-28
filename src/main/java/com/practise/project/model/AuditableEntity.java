@@ -36,5 +36,5 @@ public class AuditableEntity extends BaseEntity {
 	  private LocalDateTime modifiedOn;
 	  
 	  @Column(name = "active", columnDefinition = "boolean")
-	  private boolean active = true ;
+	  private Boolean active = true ;
 }

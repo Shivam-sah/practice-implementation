@@ -18,6 +18,7 @@ import com.practise.project.builder.ApiResponseBuilder;
 import com.practise.project.builder.Paging;
 import com.practise.project.dto.DepartmentDto;
 import com.practise.project.dto.ProjectDto;
+import com.practise.project.dto.UpdateDepartmentDto;
 import com.practise.project.entity.Department;
 import com.practise.project.exception.BadApiRequestException;
 import com.practise.project.service.DepartmentService;
@@ -43,7 +44,7 @@ public class DepartmentController {
         log.info("projectcontroller::createDepartment " + request);
         try {
         	DepartmentDto department = departmentService.createDepartment(request);
-        	return ApiResponseBuilder.getSuccessResponse(department, "Project created successfully", HttpStatus.CREATED);
+        	return ApiResponseBuilder.getSuccessResponse(department, "Department created successfully", HttpStatus.CREATED);
         } catch (BadApiRequestException ex) {
             log.error("bad api request in creatign Department", ex.getMessage());
             throw ex;
@@ -91,7 +92,7 @@ public class DepartmentController {
 	
 	@PutMapping(value = ApiConstant.EP_UPDATE_DEPARTMENT)
 	@Operation(summary = "Update Department", description = "Update Department")
-	public ResponseEntity<ApiResponse> updateProject(@RequestBody @Valid DepartmentDto request) throws Exception {
+	public ResponseEntity<ApiResponse> updateProject(@RequestBody @Valid UpdateDepartmentDto request) throws Exception {
 		log.info("projectcontroller::updateDepartment " + request);
 		try {
 			DepartmentDto res = departmentService.updateDepartment(request);

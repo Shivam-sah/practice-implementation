@@ -1,5 +1,6 @@
 package com.practise.project.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 import com.practise.project.model.AuditableEntity;
 import jakarta.persistence.Column;
@@ -21,10 +22,10 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class Department extends AuditableEntity{
 	
-	@Column(name = "dept_name", nullable = false ,unique = true, length  = 50)
+	@Column(name = "dept_name", nullable = false , /*unique = true */length  = 50)
 	private String deptName;
 	
-	@Column(name = "dept_Code", nullable = false, unique = true, length = 10)
+	@Column(name = "dept_Code", nullable = false,  /*unique = true */  length = 10)
 	private String deptCode;	
 	
 	@Column(name = "description", nullable = false )
@@ -32,6 +33,6 @@ public class Department extends AuditableEntity{
 	
 	@OneToMany(mappedBy = "department" )
 //	@JsonManagedReference
-	private Set<Employee> employees;	
+	private Set<Employee> employees =  new HashSet<>();;	
 }
 	//manager

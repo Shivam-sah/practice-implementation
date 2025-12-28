@@ -15,6 +15,6 @@ import lombok.Setter;
 @MappedSuperclass  //annotation in JPA (Java Persistence API) marks a class whose fields should be inherited by JPA entities,but the class itself is not a table in the database.
 public class BaseEntity implements Serializable{	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE )
-	private Integer id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY )
+	private Long id;
 }

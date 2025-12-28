@@ -10,9 +10,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class DepartmentDto {
+public class UpdateDepartmentDto {
 	
-	private Long id;
+	@NotNull(message = "Id can not be null")
+	private Integer id;
 	
 	@NotNull(message = "Department Name can not be null")
     @NotBlank(message = "Department Name can not be blank")
@@ -27,5 +28,5 @@ public class DepartmentDto {
 	private String deptCode;
 	
 	private String description;
-}
 
+}

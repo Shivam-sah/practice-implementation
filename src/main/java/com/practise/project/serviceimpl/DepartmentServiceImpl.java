@@ -3,11 +3,16 @@ package com.practise.project.serviceimpl;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.practise.project.builder.Paging;
 import com.practise.project.dto.DepartmentDto;
+import com.practise.project.dto.ProjectDto;
+import com.practise.project.dto.UpdateDepartmentDto;
 import com.practise.project.entity.Department;
+import com.practise.project.entity.Project;
 import com.practise.project.exception.BadApiRequestException;
+import com.practise.project.exception.ResourceNotFoundException;
 import com.practise.project.repository.DepartmentRepository;
 import com.practise.project.service.DepartmentService;
 
@@ -34,10 +39,13 @@ public class DepartmentServiceImpl implements DepartmentService {
 	}
 	
 	@Override
-	public DepartmentDto updateDepartment(DepartmentDto req) throws Exception {
+	public DepartmentDto updateDepartment(UpdateDepartmentDto req) throws Exception {
 		try {
-			Department department = deptRepo.findByDeptCodeAndActive(req.getDeptCode(), true).orElseThrow(() -> new BadApiRequestException("Department Do not Exists"));
-			Department savedDept = deptRepo.save(modelMapper.map(req, Department.class));
+			Department department = deptRepo.findByIdAndActive(req.getId(), true).orElseThrow(() -> new BadApiRequestException("Department Do not Exists"));
+			department.setDeptCode(req.getDeptCode());
+			department.setDeptName(req.getDeptName());
+			department.setDescription(req.getDescription());
+			Department savedDept = deptRepo.save(department);
 			return modelMapper.map(savedDept, DepartmentDto.class);			
 		}catch(Exception ex){
 			throw ex;
@@ -69,11 +77,19 @@ public class DepartmentServiceImpl implements DepartmentService {
 	@Override
 	public Page<DepartmentDto> getAllDepartment(Paging req) throws Exception {
 		try {
-			return null;		
+			Pageable pageableInstance = req.getPageableInstance();
+			Page<Department> departmentList = deptRepo.findByActive(true,pageableInstance);
+			if (departmentList.getContent().isEmpty() || departmentList.isEmpty()) {
+				throw new ResourceNotFoundException("Project list not found");
+			}
+			
+			Page<DepartmentDto> dtoPage = departmentList.map(department ->
+	        	modelMapper.map(department, DepartmentDto.class)
+			);
+			return dtoPage;	
 		}catch(Exception ex){
 			throw ex;
 		}
 	}
-
 	
 }

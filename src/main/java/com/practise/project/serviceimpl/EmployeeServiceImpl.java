@@ -8,12 +8,16 @@ import java.util.stream.Collectors;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import com.practise.project.dto.EmployeeCreateDto;
 import com.practise.project.dto.EmployeeDto;
 import com.practise.project.dto.ProjectDto;
+import com.practise.project.entity.Department;
 import com.practise.project.entity.Employee;
+import com.practise.project.entity.Profile;
 import com.practise.project.entity.Project;
 import com.practise.project.entity.Employee;
 import com.practise.project.exception.BadApiRequestException;
+import com.practise.project.repository.DepartmentRepository;
 import com.practise.project.repository.EmployeeRepository;
 import com.practise.project.repository.ProjectRepository;
 import com.practise.project.service.EmployeeService;
@@ -28,6 +32,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 	private final ModelMapper modelMapper;
 	private final EmployeeRepository employeeRepo;
 	private final ProjectRepository projectRepository;
+	private final DepartmentRepository deptRepo;
 	
 
 	@Override
@@ -43,7 +48,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
 	@Override
-	public EmployeeDto createEmployee(EmployeeDto request) {
+	public EmployeeDto createEmployee(EmployeeCreateDto request) {
 		try {
 			Optional<Employee> emp = employeeRepo.findByMobileNumberAndActive(request.getMobileNumber(),true);
 			if(emp.isPresent()) {
@@ -56,12 +61,26 @@ public class EmployeeServiceImpl implements EmployeeService {
 			            .orElseThrow(() -> new RuntimeException("Project not found: " + id)))
 			        .collect(Collectors.toSet());
 			}
+			
+			Department department = null;
+			if(request.getDepartmentId() != null) {
+				department = deptRepo.findByIdAndActive(request.getDepartmentId(), true).orElseThrow(() -> new BadApiRequestException("Department Do not Exists"));
+			}
 
 			Employee employee = modelMapper.map(request, Employee.class);
-			employee.getProfile().setEmployee(employee);
 			employee.setProjects(projects);
+			employee.setDepartment(department);
+			
+			Profile profile = employee.getProfile();
+			if (profile != null) {
+			    employee.setProfile(profile); // maintains both sides safely
+			}
+
+			//employee.getProfile().setEmployee(employee);
+			
 			Employee savedEmployee = employeeRepo.save(employee);			
-			return modelMapper.map(savedEmployee, EmployeeDto.class);			
+			return modelMapper.map(savedEmployee, EmployeeDto.class);
+			
 		}catch(Exception Ex) {
 			throw Ex;
 		}
