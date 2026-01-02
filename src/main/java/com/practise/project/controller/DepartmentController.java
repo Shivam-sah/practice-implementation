@@ -12,19 +12,15 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.practise.project.builder.ApiResponse;
-import com.practise.project.builder.ApiResponseBuilder;
-import com.practise.project.builder.Paging;
+import com.authlibrary.builder.ApiResponse;
+import com.authlibrary.builder.ApiResponseBuilder;
+import com.authlibrary.builder.Paging;
+import com.authlibrary.exception.BadApiRequestException;
 import com.practise.project.dto.DepartmentDto;
 import com.practise.project.dto.DepartmentDtoDup;
-import com.practise.project.dto.ProjectDto;
 import com.practise.project.dto.UpdateDepartmentDto;
-import com.practise.project.entity.Department;
-import com.practise.project.exception.BadApiRequestException;
 import com.practise.project.service.DepartmentService;
 import com.practise.project.utils.ApiConstant;
-
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

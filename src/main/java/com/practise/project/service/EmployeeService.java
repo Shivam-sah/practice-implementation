@@ -1,8 +1,7 @@
 package com.practise.project.service;
 
 import org.springframework.data.domain.Page;
-
-import com.practise.project.builder.Paging;
+import com.authlibrary.builder.Paging;
 import com.practise.project.dto.EmployeeCreateDto;
 import com.practise.project.dto.EmployeeDto;
 import com.practise.project.dto.EmployeeUpdateDto;

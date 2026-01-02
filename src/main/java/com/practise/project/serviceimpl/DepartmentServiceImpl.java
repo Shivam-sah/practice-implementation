@@ -5,18 +5,15 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import com.practise.project.builder.Paging;
+import com.authlibrary.builder.Paging;
+import com.authlibrary.exception.BadApiRequestException;
+import com.authlibrary.exception.ResourceNotFoundException;
 import com.practise.project.dto.DepartmentDto;
 import com.practise.project.dto.DepartmentDtoDup;
-import com.practise.project.dto.ProjectDto;
 import com.practise.project.dto.UpdateDepartmentDto;
 import com.practise.project.entity.Department;
-import com.practise.project.entity.Project;
-import com.practise.project.exception.BadApiRequestException;
-import com.practise.project.exception.ResourceNotFoundException;
 import com.practise.project.repository.DepartmentRepository;
 import com.practise.project.service.DepartmentService;
-
 import lombok.RequiredArgsConstructor;
 
 @Service

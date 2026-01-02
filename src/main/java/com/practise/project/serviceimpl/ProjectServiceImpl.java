@@ -1,22 +1,19 @@
 package com.practise.project.serviceimpl;
 
 import java.util.Optional;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import com.practise.project.builder.Paging;
+import com.authlibrary.builder.Paging;
+import com.authlibrary.exception.BadApiRequestException;
+import com.authlibrary.exception.ResourceNotFoundException;
 import com.practise.project.dto.ProjectDto;
 import com.practise.project.dto.ProjectDtoDup;
 import com.practise.project.dto.UpdateProjectDto;
 import com.practise.project.entity.Project;
-import com.practise.project.exception.BadApiRequestException;
-import com.practise.project.exception.ResourceNotFoundException;
 import com.practise.project.repository.ProjectRepository;
 import com.practise.project.service.ProjectService;
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
