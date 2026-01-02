@@ -2,7 +2,7 @@ package com.practise.project.entity;
 
 import java.util.HashSet;
 import java.util.Set;
-import com.practise.project.model.AuditableEntity;
+import com.authlibrary.model.AuditableEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -22,7 +22,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name="tbl_department")
-public class Department extends AuditableEntity{
+public class Department extends AuditableEntity {
 		
 	@Column(name = "dept_name", nullable = false , /*unique = true */length  = 50)
 	private String deptName;

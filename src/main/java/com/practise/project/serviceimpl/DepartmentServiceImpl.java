@@ -25,6 +25,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 	
 	private final DepartmentRepository deptRepo;
 	private final ModelMapper modelMapper;
+
 	@Override
 	public DepartmentDto createDepartment(DepartmentDto req) throws Exception {
 		try {

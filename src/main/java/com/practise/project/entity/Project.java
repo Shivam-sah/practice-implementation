@@ -18,9 +18,11 @@ import lombok.Setter;
 
 
 @Entity
-@Table(name = "project")
+@Table(name = "tbl_project")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Project extends AuditableEntity {
 
     @Column(name = "project_name", nullable = false)

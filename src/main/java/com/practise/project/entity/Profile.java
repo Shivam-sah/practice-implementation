@@ -18,6 +18,8 @@ import lombok.Setter;
 @Table(name = "profile")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Profile extends AuditableEntity {
 
     /**

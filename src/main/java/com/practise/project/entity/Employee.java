@@ -13,16 +13,15 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
-
+import lombok.*;
 
 
 @Entity
-@Table(name = "employee")
+@Table(name = "tbl_employee")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Employee extends AuditableEntity {
 
     @Column(name = "emp_name", nullable = false)
